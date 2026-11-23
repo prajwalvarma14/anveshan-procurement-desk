@@ -113,6 +113,7 @@ class TestBannedContractTerms(unittest.TestCase):
         self.assertTrue(detect_banned_terms("We will need half the order value upfront."))
         self.assertTrue(detect_banned_terms("Acme agrees to unlimited liability for damages."))
         self.assertTrue(detect_banned_terms("Acme must buy only from us during the term."))
+        self.assertTrue(detect_banned_terms("Acme will buy these items only from us for the next two years."))
         self.assertTrue(detect_banned_terms("We require an exclusive supplier agreement."))
 
     def test_allowed_terms_not_flagged(self):

@@ -105,7 +105,7 @@ def detect_banned_terms(latest_msg):
         text, re.I
     ))
     if not has_no_excl:
-        if re.search(r'exclusive\s+supplier|exclusivity|must\s+buy\s+only\s+from', text, re.I):
+        if re.search(r'exclusive\s+supplier|exclusivity|only\s+from\s+us|must\s+buy\s+only\s+from|buy\s+these\s+items\s+only\s+from', text, re.I):
             return True
 
     return False
