@@ -164,7 +164,7 @@ def words_to_number(text):
 #  CURRENCY & GST DETECTION
 # ═══════════════════════════════════════════════════════════════════════════════
 
-_CUR = r'(?:₹|Rs\.?\s*|INR\s+|USD\s*|\$|EUR\s*|€|GBP\s*|£|SGD\s*|AED\s*|JPY\s*)'
+_CUR = r'(?:₹|\bRs\.?\s*|\bINR\s+|\bUSD\s*|\$|\bEUR\s*|€|\bGBP\s*|£|\bSGD\s*|\bAED\s*|\bJPY\s*)'
 _AMT = r'(\d[\d,]*(?:\.\d+)?)'  # captures an amount starting with digit
 
 def detect_currency(prefix_text):

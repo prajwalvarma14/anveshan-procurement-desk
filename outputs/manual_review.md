@@ -23,25 +23,6 @@ Our system integration team will handle setup at no extra cost.
 Regards,
 Kes...
 
-### Thread T10092 (Zephyr SaaS, design-software)
-- Currency: UNKNOWN
-- Latest Message snippet: Hi Priya,
-
-For the 200 seats you requested, we are pleased to quote a further 8% off our previous quote.
-
-Regards,
-Zephyr SaaS...
-
-### Thread T10105 (Redwood Couriers, crm-licenses)
-- Currency: UNKNOWN
-- Latest Message snippet: Hello,
-
-For the 12 seats you requested, the best we can offer is a further 8% off our previous quote.
-We will need half the order value upfront.
-
-Best,
-Redwood Couriers...
-
 ### Thread T10137 (Jupiter Devices, monitors)
 - Currency: UNKNOWN
 - Latest Message snippet: Hi Priya,
@@ -60,16 +41,6 @@ We can definitely give you a competitive price on the servers. Let's get on a ca
 Warm regards,
 Everbright Lighting...
 
-### Thread T10169 (Arvind Office Supplies, crm-licenses)
-- Currency: UNKNOWN
-- Latest Message snippet: Good morning,
-
-For the 80 seats you requested, our final price is a further 5% off our previous quote.
-We will need half the order value upfront.
-
-Thanks and regards,
-Arvind Office Supplies...
-
 ### Thread T10195 (Arvind Office Supplies, printer-paper)
 - Currency: UNKNOWN
 - Latest Message snippet: Dear Acme Procurement,
@@ -80,16 +51,6 @@ Delivery within 3 weeks of PO.
 Warm regards,
 Arvind Office Supplies...
 
-### Thread T10196 (Coastline Caterers, design-software)
-- Currency: UNKNOWN
-- Latest Message snippet: Hello,
-
-For the 200 seats you requested, our final price is a further 3% off our previous quote.
-Our assistant manager, Ravi, will coordinate delivery.
-
-Warm regards,
-Coastline Caterers...
-
 ### Thread T10210 (Yamuna Traders, training)
 - Currency: JPY
 - Latest Message snippet: Hello,
@@ -99,16 +60,6 @@ We are not asking for exclusivity.
 
 Cheers,
 Yamuna Traders...
-
-### Thread T10247 (Tidewater Systems, security-guards)
-- Currency: UNKNOWN
-- Latest Message snippet: Hello,
-
-For the 12 guards you requested, we can do a further 8% off our previous quote.
-Standard net-45 payment terms apply.
-
-Warm regards,
-Tidewater Systems...
 
 ### Thread T10252 (Nimbus Hosting, led-lighting)
 - Currency: JPY
@@ -165,25 +116,6 @@ Pricing will depend on the final specs; please share them and we will revert.
 Regards,
 Deccan Logistics...
 
-### Thread T10344 (Lumen Workspace, cleaning)
-- Currency: UNKNOWN
-- Latest Message snippet: Hello,
-
-For the 50 sites you requested, we can do a further 3% off our previous quote.
-Our system integration team will handle setup at no extra cost.
-
-Regards,
-Lumen Workspace...
-
-### Thread T10351 (Nimbus Hosting, crm-licenses)
-- Currency: UNKNOWN
-- Latest Message snippet: Namaste team,
-
-For the 10 seats you requested, our revised offer is a further 10% off our previous quote.
-
-Warm regards,
-Nimbus Hosting...
-
 ### Thread T10357 (Meridian Skills, cloud-servers)
 - Currency: JPY
 - Latest Message snippet: Good morning,
@@ -193,6 +125,71 @@ Standard net-45 payment terms apply.
 
 Regards,
 Meridian Skills...
+
+### Thread T10372 (Lotus Hardware, office-chairs)
+- Currency: UNKNOWN
+- Latest Message snippet: Good morning,
+
+We can definitely give you a competitive price on the chairs. Let's get on a call to discuss.
+Standard net-45 payment terms apply.
+Our assistant manager, Ravi, will coordinate delivery....
+
+### Thread T10394 (Ivory Events Catering, crm-licenses)
+- Currency: UNKNOWN
+- Latest Message snippet: Namaste team,
+
+We can definitely give you a competitive price on the seats. Let's get on a call to discuss.
+Delivery within 3 weeks of PO.
+
+Cheers,
+Ivory Events Catering...
+
+### Thread T10427 (Jupiter Devices, catering)
+- Currency: JPY
+- Latest Message snippet: Dear Acme Procurement,
+
+We can offer JPY 228 per meal.
+
+Regards,
+Jupiter Devices...
+
+### Thread T10452 (Jupiter Devices, monitors)
+- Currency: UNKNOWN
+- Latest Message snippet: Hello,
+
+Pricing will depend on the final specs; please share them and we will revert.
+
+Thanks and regards,
+Jupiter Devices...
+
+### Thread T10456 (Kite Electricals, office-chairs)
+- Currency: SGD
+- Latest Message snippet: Good morning,
+
+We can offer SGD 142 per chair.
+
+Cheers,
+Kite Electricals...
+
+### Thread T10466 (Vertex Mobile, catering)
+- Currency: UNKNOWN
+- Latest Message snippet: Good morning,
+
+Pricing will depend on the final specs; please share them and we will revert.
+Payment terms: 20% advance, balance net-30 after delivery.
+
+Best,
+Vertex Mobile...
+
+### Thread T10472 (Horizon Cloud, led-lighting)
+- Currency: UNKNOWN
+- Latest Message snippet: Good morning,
+
+Pricing will depend on the final specs; please share them and we will revert.
+A 25% upfront payment works for us.
+
+Cheers,
+Horizon Cloud...
 
 ## 2. Sample Prompt Injections
 
@@ -346,6 +343,15 @@ Ban...
 For the 80 meals you requested, our revised offer is ₹330 per meal, with a further 10% off for orders of 50 meals or more.
 Acme's liability under this contract shall be unlimit...
 
+### Thread T10105 (Redwood Couriers, crm-licenses)
+- Snippet: Hello,
+
+For the 12 seats you requested, the best we can offer is a further 8% off our previous quote.
+We will need half the order value upfront.
+
+Best,
+Redwood Couriers...
+
 ### Thread T10106 (Willow Training Co, led-lighting)
 - Snippet: Hi Priya,
 
@@ -396,6 +402,15 @@ This agreement auto-renews every year unless cancelled in writing.
 Regards,
 Fjord Design Tools...
 
+### Thread T10169 (Arvind Office Supplies, crm-licenses)
+- Snippet: Good morning,
+
+For the 80 seats you requested, our final price is a further 5% off our previous quote.
+We will need half the order value upfront.
+
+Thanks and regards,
+Arvind Office Supplies...
+
 ### Thread T10208 (Ivory Events Catering, headsets)
 - Snippet: Dear Acme Procurement,
 
@@ -424,25 +439,6 @@ The agreement renews on its own at the end of every term.
 
 Best,
 Jade Express...
-
-### Thread T10299 (Willow Training Co, catering)
-- Snippet: Hello,
-
-For the 50 meals you requested, our final price is Rs. 3,982 per dozen meals.
-We will need half the order value upfront.
-Prices valid for 30 days.
-
-Cheers,
-Willow Training Co...
-
-### Thread T10325 (Yamuna Traders, cleaning)
-- Snippet: Hi Priya,
-
-For the 5 sites you requested, we are pleased to quote ninety-six thousand two hundred rupees per site per month.
-We will need half the order value upfront.
-
-Regards,
-Yamuna Traders...
 
 ## 4. Large Deltas between our_last_counter and offer
 
