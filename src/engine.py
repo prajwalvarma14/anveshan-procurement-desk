@@ -8,12 +8,18 @@ from parser import (
 )
 
 
+_POLICY_CACHE = {}
+
 def get_effective_policy(category_key, thread_date, supplier_name):
     """
     Build the effective policy for a thread by starting from the category
     base, applying amendments up to the thread date, then supplier contract
-    overrides.
+    overrides. Results are cached for ultra-fast lookup.
     """
+    cache_key = (category_key, thread_date, supplier_name)
+    if cache_key in _POLICY_CACHE:
+        return _POLICY_CACHE[cache_key]
+
     base = CATEGORIES[category_key]
     policy = {
         'target':   base['target'],
@@ -36,6 +42,7 @@ def get_effective_policy(category_key, thread_date, supplier_name):
         if category_key in caps:
             policy['walkaway'] = caps[category_key]
 
+    _POLICY_CACHE[cache_key] = policy
     return policy
 
 
