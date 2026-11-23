@@ -1,4 +1,4 @@
 # Supplier: GreenLeaf Facility Care
 
-- **Status:** PROBATION — no concessions (see decision procedure)
-- **Notes:** Prefers email negotiation.
+- **Status:** BLACKLISTED — do not do business (failed audit)
+- **Notes:** Has offered volume discounts before.

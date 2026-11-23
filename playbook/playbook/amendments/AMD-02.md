@@ -1,4 +1,4 @@
-# AMD-02: Monitors
+# AMD-02: Cloud servers
 
-- **Effective from:** 2026-11-01
-- **Change:** the target price for Monitors is now ₹13,790.
+- **Effective from:** 2026-11-11
+- **Change:** the walk-away price for Cloud servers is now ₹1,19,990.

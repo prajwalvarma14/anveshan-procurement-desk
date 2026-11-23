@@ -1,4 +1,4 @@
 # Supplier: Dune Seating
 
 - **Status:** Approved
-- **Notes:** Often replies in long threads.
+- **Notes:** Responsive account manager.

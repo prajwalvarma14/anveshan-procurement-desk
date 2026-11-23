@@ -1,4 +1,4 @@
-# AMD-09: Printer paper
+# AMD-09: Monitors
 
-- **Effective from:** 2026-12-01
-- **Change:** the walk-away price for Printer paper is now ₹2,770.
+- **Effective from:** 2026-12-14
+- **Change:** the approval limit for Monitors is now ₹9,60,000.

@@ -1,4 +1,4 @@
-# AMD-05: Mobile phones
+# AMD-05: Printer paper
 
-- **Effective from:** 2026-09-19
-- **Change:** the approval limit for Mobile phones is now ₹25,00,000.
+- **Effective from:** 2026-11-06
+- **Change:** the walk-away price for Printer paper is now ₹2,780.

@@ -1,4 +1,4 @@
-# AMD-03: Printer paper
+# AMD-03: Mobile phones
 
-- **Effective from:** 2026-09-10
-- **Change:** the walk-away price for Printer paper is now ₹2,720.
+- **Effective from:** 2026-11-25
+- **Change:** the walk-away price for Mobile phones is now ₹29,780.

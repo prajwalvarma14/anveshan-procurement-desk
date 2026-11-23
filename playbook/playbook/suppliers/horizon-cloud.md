@@ -1,4 +1,4 @@
 # Supplier: Horizon Cloud
 
 - **Status:** Approved
-- **Notes:** Often replies in long threads.
+- **Notes:** Has offered volume discounts before.

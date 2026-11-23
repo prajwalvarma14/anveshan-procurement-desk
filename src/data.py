@@ -1,7 +1,9 @@
 """Reference data for The Procurement Desk — categories, suppliers, amendments, currencies."""
 
-# ── Categories ───────────────────────────────────────────────────────────────
-# billing: None = non-subscription; 'month'/'year' = expected billing period
+import os
+from loaders import load_amendments, load_suppliers
+
+# ── Categories (Fixed baseline spend categories) ─────────────────────────────
 CATEGORIES = {
     'catering':        {'target': 280,    'walkaway': 340,     'rounds': 3, 'beta': 1, 'approval': 600000,   'gst': 0.05, 'billing': None},
     'cleaning':        {'target': 85000,  'walkaway': 100000,  'rounds': 4, 'beta': 2, 'approval': 900000,   'gst': 0.18, 'billing': 'month'},
@@ -20,49 +22,6 @@ CATEGORIES = {
     'training':        {'target': 6000,   'walkaway': 7500,    'rounds': 3, 'beta': 1, 'approval': 900000,   'gst': 0.18, 'billing': None},
 }
 
-# ── Amendments (sorted by effective_date) ────────────────────────────────────
-AMENDMENTS = [
-    {'id': 'AMD-03', 'category': 'printer-paper',   'date': '2026-09-10', 'field': 'walkaway',  'value': 2720},
-    {'id': 'AMD-04', 'category': 'cleaning',         'date': '2026-09-18', 'field': 'approval',  'value': 680000},
-    {'id': 'AMD-05', 'category': 'mobile-phones',    'date': '2026-09-19', 'field': 'approval',  'value': 2500000},
-    {'id': 'AMD-01', 'category': 'courier',           'date': '2026-10-14', 'field': 'approval',  'value': 620000},
-    {'id': 'AMD-06', 'category': 'security-guards',  'date': '2026-10-18', 'field': 'walkaway',  'value': 26550},
-    {'id': 'AMD-02', 'category': 'monitors',          'date': '2026-11-01', 'field': 'target',    'value': 13790},
-    {'id': 'AMD-09', 'category': 'printer-paper',    'date': '2026-12-01', 'field': 'walkaway',  'value': 2770},
-    {'id': 'AMD-08', 'category': 'crm-licenses',     'date': '2026-12-05', 'field': 'approval',  'value': 1880000},
-    {'id': 'AMD-07', 'category': 'crm-licenses',     'date': '2026-12-08', 'field': 'approval',  'value': 3120000},
-]
-
-# ── Supplier status ──────────────────────────────────────────────────────────
-SUPPLIER_STATUS = {
-    'Arvind Office Supplies':   'BLACKLISTED',
-    'Everbright Lighting':      'BLACKLISTED',
-    'Saffron Kitchens':         'BLACKLISTED',
-    'Banyan Guarding':          'PROBATION',
-    'GreenLeaf Facility Care':  'PROBATION',
-    'Jade Express':             'PROBATION',
-    'Vertex Mobile':            'PROBATION',
-}
-# All other suppliers are 'APPROVED' (default)
-
-# ── Supplier contract price caps (replace walkaway for that category) ────────
-SUPPLIER_PRICE_CAPS = {
-    'Deccan Logistics':       {'monitors': 17700},
-    'Indus Paper Mills':      {'courier': 200},
-    'Jupiter Devices':        {'design-software': 37500},
-    'Monsoon Foods':          {'training': 8100},
-    'Northstar Facilities':   {'mobile-phones': 29000},
-    'Quartz Software':        {'mobile-phones': 29400},
-}
-
-# ── Supplier contract FX overrides ───────────────────────────────────────────
-SUPPLIER_FX = {
-    'Fjord Design Tools':  {'GBP': 105},
-    'Nimbus Hosting':      {'USD': 83},
-    'Redwood Couriers':    {'EUR': 90.5},
-    'Xenon Displays':      {'EUR': 90.5},
-}
-
 # ── Standard currency conversion table ───────────────────────────────────────
 CURRENCY_RATES = {
     'INR': 1,
@@ -71,5 +30,10 @@ CURRENCY_RATES = {
     'GBP': 106,
 }
 
-# Supported currencies (anything else → MISSING_INFO)
 KNOWN_CURRENCIES = {'INR', 'USD', 'EUR', 'GBP'}
+
+# ── Dynamic Loading from Playbook Directory ──────────────────────────────────
+_playbook_dir = os.path.join(os.path.dirname(__file__), '..', 'playbook', 'playbook')
+
+AMENDMENTS = load_amendments(_playbook_dir)
+SUPPLIER_STATUS, SUPPLIER_PRICE_CAPS, SUPPLIER_FX = load_suppliers(_playbook_dir)

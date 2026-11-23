@@ -1,4 +1,5 @@
 # Supplier: Arvind Office Supplies
 
-- **Status:** BLACKLISTED — do not do business (failed audit)
-- **Notes:** Often replies in long threads.
+- **Status:** Approved
+- **Contract:** invoices in GBP are converted at ₹104.5 per GBP
+- **Notes:** Has offered volume discounts before.

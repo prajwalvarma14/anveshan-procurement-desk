@@ -1,4 +1,4 @@
 # Supplier: Zephyr SaaS
 
-- **Status:** Approved
-- **Notes:** Prefers email negotiation.
+- **Status:** PROBATION — no concessions (see decision procedure)
+- **Notes:** Has offered volume discounts before.

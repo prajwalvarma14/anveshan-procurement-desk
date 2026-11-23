@@ -1,4 +1,4 @@
 # Supplier: Lotus Hardware
 
 - **Status:** Approved
-- **Notes:** Prefers email negotiation.
+- **Notes:** Often replies in long threads.

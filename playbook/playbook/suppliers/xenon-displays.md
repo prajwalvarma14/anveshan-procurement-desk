@@ -1,5 +1,5 @@
 # Supplier: Xenon Displays
 
 - **Status:** Approved
-- **Contract:** invoices in EUR are converted at ₹90.5 per EUR
-- **Notes:** Often replies in long threads.
+- **Contract:** price cap for LED lighting of ₹2,300 per fixture (replaces the walk-away price)
+- **Notes:** Has offered volume discounts before.

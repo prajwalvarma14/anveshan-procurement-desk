@@ -1,4 +1,4 @@
 # Supplier: Banyan Guarding
 
 - **Status:** PROBATION — no concessions (see decision procedure)
-- **Notes:** Prefers email negotiation.
+- **Notes:** Has offered volume discounts before.

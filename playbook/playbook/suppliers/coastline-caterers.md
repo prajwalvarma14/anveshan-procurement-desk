@@ -1,4 +1,4 @@
 # Supplier: Coastline Caterers
 
 - **Status:** Approved
-- **Notes:** Has offered volume discounts before.
+- **Notes:** Prefers email negotiation.

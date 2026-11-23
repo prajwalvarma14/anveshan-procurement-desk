@@ -1,4 +1,4 @@
-# AMD-08: CRM licenses
+# AMD-08: LED lighting
 
-- **Effective from:** 2026-12-05
-- **Change:** the approval limit for CRM licenses is now ₹18,80,000.
+- **Effective from:** 2026-12-04
+- **Change:** the walk-away price for LED lighting is now ₹2,330.

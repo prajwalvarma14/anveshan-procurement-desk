@@ -1,4 +1,4 @@
 # Supplier: Cobalt Compute
 
 - **Status:** Approved
-- **Notes:** Responsive account manager.
+- **Notes:** Often replies in long threads.

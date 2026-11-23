@@ -1,4 +1,4 @@
-# AMD-04: Cleaning services
+# AMD-04: Catering
 
-- **Effective from:** 2026-09-18
-- **Change:** the approval limit for Cleaning services is now ₹6,80,000.
+- **Effective from:** 2026-09-20
+- **Change:** the target price for Catering is now ₹270.

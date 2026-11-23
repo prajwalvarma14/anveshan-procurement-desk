@@ -1,4 +1,4 @@
 # Supplier: Lumen Workspace
 
-- **Status:** Approved
-- **Notes:** Prefers email negotiation.
+- **Status:** BLACKLISTED — do not do business (failed audit)
+- **Notes:** Responsive account manager.

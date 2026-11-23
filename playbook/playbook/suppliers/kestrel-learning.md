@@ -1,4 +1,5 @@
 # Supplier: Kestrel Learning
 
 - **Status:** Approved
-- **Notes:** Has offered volume discounts before.
+- **Contract:** invoices in EUR are converted at ₹90.5 per EUR
+- **Notes:** Often replies in long threads.
