@@ -67,9 +67,15 @@ def main():
         if (i + 1) % 500 == 0:
             print(f'  Processed {i+1}/{len(threads)}...')
 
-    # Write output
-    write_submission(results, output_path)
-    print(f'\n  ✅ Written {len(results)} rows to {output_path}')
+    # Write outputs
+    final_output_path = os.path.join(base, 'outputs', 'submission_final.csv')
+    write_submission(results, final_output_path)
+    print(f'\n  ✅ Written {len(results)} rows to {final_output_path}')
+    try:
+        write_submission(results, output_path)
+        print(f'  ✅ Written {len(results)} rows to {output_path}')
+    except PermissionError:
+        print(f'  ℹ Note: {output_path} is currently locked by another program (e.g. Excel). submission_final.csv was created successfully.')
 
     # Summary
     print(f'\n  Distribution of ACTION:REASON:')

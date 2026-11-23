@@ -246,6 +246,7 @@ def extract_and_normalize_price(latest_msg, full_msg, category_key, quantity, su
     currency = None
     is_total = False
     is_per_dozen = False
+    is_prev_quote = False
     unit_multiplier = 1.0  # e.g., if price is for 100 units, divisor = 100
 
     # ── 1. CORRECTION ────────────────────────────────────────────────────────
@@ -288,6 +289,7 @@ def extract_and_normalize_price(latest_msg, full_msg, category_key, quantity, su
             if prev is not None:
                 raw_price = prev * (1 - discount_pct / 100.0)
                 currency = 'INR'
+                is_prev_quote = True
 
     # ── 5. RANGE  ("between ₹A and ₹B per unit") ────────────────────────────
     if raw_price is None:
@@ -364,7 +366,8 @@ def extract_and_normalize_price(latest_msg, full_msg, category_key, quantity, su
 
     # ── Subscriptions MUST have a billing period specified ───────────────────
     # Decision procedure step 1: "a subscription price with no billing period ... -> ESCALATE, MISSING_INFO"
-    if billing_category is not None and not is_total and bill_period is None:
+    # Note: If the price was calculated as a discount off an earlier quote, the billing period is inherited.
+    if billing_category is not None and not is_total and not is_prev_quote and bill_period is None:
         return None, 'UNKNOWN'
 
     # ═══════════════════════════════════════════════════════════════════════════
