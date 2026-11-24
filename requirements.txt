@@ -1,0 +1,10 @@
+# The Procurement Desk — Environment Requirements
+# Core Runtime: Pure Python standard library (re, csv, math, decimal, datetime, os, sys, pathlib)
+# Python version: >= 3.10
+
+# Optional packages for development, unit testing, notebook execution, and deck generation:
+pandas>=1.5.0
+pytest>=7.0.0
+jupyter>=1.0.0
+ipykernel>=6.0.0
+python-pptx>=1.0.0

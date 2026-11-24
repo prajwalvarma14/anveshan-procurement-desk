@@ -1,11 +1,19 @@
 """Decision engine — implements the playbook's decision procedure."""
 
 from decimal import Decimal, ROUND_HALF_UP
-from data import CATEGORIES, AMENDMENTS, SUPPLIER_STATUS, SUPPLIER_PRICE_CAPS, SUPPLIER_FX, CURRENCY_RATES
-from parser import (
-    isolate_latest_message, detect_injection, detect_banned_terms,
-    extract_and_normalize_price,
-)
+
+try:
+    from data import CATEGORIES, AMENDMENTS, SUPPLIER_STATUS, SUPPLIER_PRICE_CAPS, SUPPLIER_FX, CURRENCY_RATES
+    from parser import (
+        isolate_latest_message, detect_injection, detect_banned_terms,
+        extract_and_normalize_price,
+    )
+except ImportError:
+    from src.data import CATEGORIES, AMENDMENTS, SUPPLIER_STATUS, SUPPLIER_PRICE_CAPS, SUPPLIER_FX, CURRENCY_RATES
+    from src.parser import (
+        isolate_latest_message, detect_injection, detect_banned_terms,
+        extract_and_normalize_price,
+    )
 
 
 _POLICY_CACHE = {}

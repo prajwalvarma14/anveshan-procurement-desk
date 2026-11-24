@@ -90,6 +90,13 @@ def main():
         except PermissionError:
             print(f'  ℹ Note: {fpath} is locked by another process.')
 
+    root_sub = os.path.join(base, 'submission.csv')
+    try:
+        write_submission(results, root_sub)
+        print(f'  ✅ Written {len(results)} rows to {root_sub}')
+    except PermissionError:
+        print(f'  ℹ Note: {root_sub} is locked by another process.')
+
     print(f'\n  Distribution of ACTION:REASON:')
     for key in sorted(action_counts.keys()):
         print(f'    {key}: {action_counts[key]}')
