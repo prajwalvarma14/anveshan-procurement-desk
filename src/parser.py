@@ -52,26 +52,12 @@ def detect_injection(full_msg):
     """Return True if the message contains a prompt injection attempt."""
     m_lower = full_msg.lower()
     if not (
-        '<!--' in full_msg or
-        'system note' in m_lower or
-        'language model' in m_lower or
-        'note to' in m_lower or
-        'automated system' in m_lower or
-        'whichever bot' in m_lower or
-        'previous instructions' in m_lower or
-        'ignore' in m_lower or
-        'admin override' in m_lower or
-        'playbook' in m_lower or
-        'सहायक' in full_msg or 'निर्देश' in full_msg or
-        'pre-approved' in m_lower or 'preapproved' in m_lower or
-        'already approved' in m_lower or 'signed off' in m_lower or
-        'has been granted' in m_lower or 'approval already' in m_lower or
-        'reviewing assistant' in m_lower or
-        'decision as' in m_lower or 'mark it accepted' in m_lower or
-        (('reading' in m_lower or 'processing' in m_lower or 'screens' in m_lower or 'reviewing' in m_lower) and ('ai' in m_lower or 'bot' in m_lower or 'model' in m_lower)) or
-        (('dear' in m_lower or 'to' in m_lower or 'for' in m_lower) and ('ai' in m_lower or 'bot' in m_lower or 'automated' in m_lower)) or
-        'please approve' in m_lower or 'please accept' in m_lower or 'please grant' in m_lower or 'please override' in m_lower or
-        ('accept' in full_msg and ('output' in m_lower or 'return' in m_lower or 'set' in m_lower or 'mark' in m_lower or 'record' in m_lower))
+        '<!--' in full_msg or 'ai' in m_lower or 'bot' in m_lower or 'model' in m_lower or
+        'override' in m_lower or 'instruction' in m_lower or 'skip' in m_lower or
+        'approved' in m_lower or 'accept' in m_lower or 'cfo' in m_lower or
+        'system' in m_lower or 'grant' in m_lower or 'सहायक' in full_msg or 'निर्देश' in full_msg or
+        'order value' in m_lower or 'dear' in m_lower or 'please' in m_lower or
+        'review' in m_lower or 'mark' in m_lower or 'record' in m_lower
     ):
         return False
     return bool(_COMBINED_INJECTION_RE.search(full_msg))
@@ -100,32 +86,35 @@ def detect_banned_terms(latest_msg):
     """Return True if the latest message contains a banned contract term."""
     text = latest_msg
     t_lower = text.lower()
+    if not (
+        'renew' in t_lower or 'year' in t_lower or 'upfront' in t_lower or
+        'advance' in t_lower or 'half' in t_lower or '%' in t_lower or
+        'liability' in t_lower or 'exclusiv' in t_lower or 'only from' in t_lower
+    ):
+        return False
 
     # 1. Auto-renewal
-    if 'renew' in t_lower or 'year to year' in t_lower:
-        if not RE_DENIAL.search(text):
-            if RE_AUTO_RENEW.search(text) or RE_YEAR_TO_YEAR.search(text) or RE_RENEWS_OWN.search(text):
-                return True
+    if not RE_DENIAL.search(text):
+        if RE_AUTO_RENEW.search(text) or RE_YEAR_TO_YEAR.search(text) or RE_RENEWS_OWN.search(text):
+            return True
 
     # 2. Upfront / advance > 30% (numbers or words like 'half')
-    if 'upfront' in t_lower or 'advance' in t_lower or 'half' in t_lower:
-        if RE_HALF_ADVANCE.search(text):
+    if RE_HALF_ADVANCE.search(text):
+        return True
+
+    for m in RE_PCT_ADVANCE.finditer(text):
+        pct = int(m.group(1) or m.group(2))
+        if pct > 30:
             return True
-        for m in RE_PCT_ADVANCE.finditer(text):
-            pct = int(m.group(1) or m.group(2))
-            if pct > 30:
-                return True
 
     # 3. Unlimited liability for Acme
-    if 'liability' in t_lower and 'unlimited' in t_lower:
-        if RE_LIABILITY.search(text):
-            return True
+    if RE_LIABILITY.search(text):
+        return True
 
     # 4. Exclusivity
-    if 'exclusiv' in t_lower or 'only from' in t_lower or 'only from us' in t_lower:
-        if not RE_NO_EXCL.search(text):
-            if RE_EXCL.search(text):
-                return True
+    if not RE_NO_EXCL.search(text):
+        if RE_EXCL.search(text):
+            return True
 
     return False
 
@@ -212,13 +201,13 @@ RE_EARLIER_QUOTE = re.compile(r'(?:₹|Rs\.?\s*|INR\s+)' + _AMT, re.I)
 def detect_currency(prefix_text):
     """Detect currency from text just before the number."""
     t = prefix_text.strip().lower()
-    if '₹' in t or 'rs' in t or 'inr' in t:
+    if any(c in t for c in ['₹', 'rs', 'inr']):
         return 'INR'
-    if '$' in t or 'usd' in t:
+    if any(c in t for c in ['$', 'usd']):
         return 'USD'
-    if '€' in t or 'eur' in t:
+    if any(c in t for c in ['€', 'eur']):
         return 'EUR'
-    if '£' in t or 'gbp' in t:
+    if any(c in t for c in ['£', 'gbp']):
         return 'GBP'
     if 'sgd' in t:
         return 'SGD'
@@ -231,20 +220,15 @@ def detect_currency(prefix_text):
 
 def is_gst_inclusive(text):
     """Check if the message indicates a GST-inclusive price."""
-    if 'gst' not in text.lower():
-        return False
     return bool(RE_GST.search(text))
 
 
 def detect_billing_period(text):
     """Detect whether the offer quotes per month or per year."""
-    t_lower = text.lower()
-    if 'month' in t_lower:
-        if RE_PERIOD_MONTH.search(text):
-            return 'month'
-    if 'year' in t_lower or 'annum' in t_lower or 'annual' in t_lower:
-        if RE_PERIOD_YEAR.search(text):
-            return 'year'
+    if RE_PERIOD_MONTH.search(text):
+        return 'month'
+    if RE_PERIOD_YEAR.search(text):
+        return 'year'
     return None
 
 
@@ -252,22 +236,12 @@ def detect_billing_period(text):
 #  EARLIER SUPPLIER QUOTE EXTRACTION  (for "X% off our previous quote")
 # ═══════════════════════════════════════════════════════════════════════════════
 
-_SUPPLIER_EARLIER_RE_CACHE = {}
-
-def get_supplier_earlier_re(supplier_name):
-    pat = _SUPPLIER_EARLIER_RE_CACHE.get(supplier_name)
-    if pat is None:
-        pat = re.compile(
-            r'\[Earlier message\s*[—–-]\s*' + re.escape(supplier_name) + r'.*?\](.*?)(?=\[|$)',
-            re.DOTALL
-        )
-        _SUPPLIER_EARLIER_RE_CACHE[supplier_name] = pat
-    return pat
-
-
 def extract_earlier_supplier_quote(full_msg, supplier_name):
     """Find the most recent supplier quote from earlier messages in the thread."""
-    pattern = get_supplier_earlier_re(supplier_name)
+    pattern = re.compile(
+        r'\[Earlier message\s*[—–-]\s*' + re.escape(supplier_name) + r'.*?\](.*?)(?=\[|$)',
+        re.DOTALL
+    )
     quotes = []
     for m in pattern.finditer(full_msg):
         pm = RE_EARLIER_QUOTE.search(m.group(1))
@@ -289,7 +263,6 @@ def extract_and_normalize_price(latest_msg, full_msg, category_key, quantity, su
     Returns (normalized_price_float, currency_str) or (None, 'UNKNOWN') on failure.
     """
     text = latest_msg
-    t_lower = text.lower()
     gst_incl = is_gst_inclusive(text)
     bill_period = detect_billing_period(text)
 
@@ -300,16 +273,15 @@ def extract_and_normalize_price(latest_msg, full_msg, category_key, quantity, su
     is_prev_quote = False
 
     # ── 1. CORRECTION ────────────────────────────────────────────────────────
-    if 'correction' in t_lower or 'should read' in t_lower:
-        m = RE_CORRECTION_1.search(text)
-        if not m:
-            m = RE_CORRECTION_2.search(text)
-        if m:
-            currency = detect_currency(m.group(1))
-            raw_price = parse_number(m.group(2))
+    m = RE_CORRECTION_1.search(text)
+    if not m:
+        m = RE_CORRECTION_2.search(text)
+    if m:
+        currency = detect_currency(m.group(1))
+        raw_price = parse_number(m.group(2))
 
     # ── 2. TOTAL PRICE  ("₹X in total for all N") ───────────────────────────
-    if raw_price is None and 'total' in t_lower:
+    if raw_price is None:
         m = RE_TOTAL.search(text)
         if m:
             currency = detect_currency(m.group(1))
@@ -317,7 +289,7 @@ def extract_and_normalize_price(latest_msg, full_msg, category_key, quantity, su
             is_total = True
 
     # ── 3. LIST PRICE DISCOUNT  ("D% discount on our list price of ₹X") ─────
-    if raw_price is None and 'list price' in t_lower:
+    if raw_price is None:
         m = RE_LIST_DISC.search(text)
         if m:
             discount_pct = int(m.group(1))
@@ -326,7 +298,7 @@ def extract_and_normalize_price(latest_msg, full_msg, category_key, quantity, su
             raw_price = list_price * (1 - discount_pct / 100.0)
 
     # ── 4. PREVIOUS QUOTE DISCOUNT  ("further D% off our previous quote") ───
-    if raw_price is None and ('previous' in t_lower or 'prior' in t_lower or 'earlier' in t_lower):
+    if raw_price is None:
         m = RE_PREV_DISC.search(text)
         if m:
             discount_pct = int(m.group(1))
@@ -337,7 +309,7 @@ def extract_and_normalize_price(latest_msg, full_msg, category_key, quantity, su
                 is_prev_quote = True
 
     # ── 5. RANGE  ("between ₹A and ₹B per unit") ────────────────────────────
-    if raw_price is None and 'between' in t_lower:
+    if raw_price is None:
         m = RE_RANGE.search(text)
         if m:
             currency = detect_currency(m.group(1))
@@ -346,7 +318,7 @@ def extract_and_normalize_price(latest_msg, full_msg, category_key, quantity, su
             raw_price = max(a, b)
 
     # ── 6. TIERED PRICING ("₹X for up to N, and ₹Y for larger") ─────────────
-    if raw_price is None and ('larger' in t_lower or 'up to' in t_lower):
+    if raw_price is None:
         m = RE_TIER.search(text)
         if m:
             currency = detect_currency(m.group(1))
@@ -356,7 +328,7 @@ def extract_and_normalize_price(latest_msg, full_msg, category_key, quantity, su
             raw_price = price_low if quantity <= threshold else price_high_tier
 
     # ── 7. K and LAKH NOTATION ("₹14.6k per monitor", "Rs. 78k per site") ────
-    if raw_price is None and ('k' in t_lower or 'lakh' in t_lower):
+    if raw_price is None:
         m = RE_K_LAKH.search(text)
         if m:
             currency = detect_currency(m.group(1))
@@ -368,7 +340,7 @@ def extract_and_normalize_price(latest_msg, full_msg, category_key, quantity, su
                 raw_price = base_val * 100000.0
 
     # ── 8. PER DOZEN ────────────────────────────────────────────────────────
-    if raw_price is None and 'dozen' in t_lower:
+    if raw_price is None:
         m = RE_DOZEN.search(text)
         if m:
             currency = detect_currency(m.group(1))
@@ -376,7 +348,7 @@ def extract_and_normalize_price(latest_msg, full_msg, category_key, quantity, su
             is_per_dozen = True
 
     # ── 9. PRICE IN WORDS  ("twenty thousand rupees per unit") ────────────────
-    if raw_price is None and ('rupee' in t_lower or 'rupees' in t_lower):
+    if raw_price is None:
         m = RE_WORDS.search(text)
         if m:
             num = words_to_number(m.group(1))
@@ -405,21 +377,19 @@ def extract_and_normalize_price(latest_msg, full_msg, category_key, quantity, su
     price = raw_price
 
     # ── Free-for-every modifier ──────────────────────────────────────────────
-    if 'free' in t_lower:
-        m_free = RE_FREE.search(text)
-        if m_free:
-            free_units = int(m_free.group(1))
-            paid_units = int(m_free.group(2))
-            price = price * paid_units / (paid_units + free_units)
+    m_free = RE_FREE.search(text)
+    if m_free:
+        free_units = int(m_free.group(1))
+        paid_units = int(m_free.group(2))
+        price = price * paid_units / (paid_units + free_units)
 
     # ── Volume discount modifier ─────────────────────────────────────────────
-    if '%' in text and ('off' in t_lower or 'discount' in t_lower):
-        m_vol = RE_VOL.search(text)
-        if m_vol:
-            vol_disc = int(m_vol.group(1))
-            vol_threshold = int(m_vol.group(2))
-            if quantity >= vol_threshold:
-                price = price * (1 - vol_disc / 100.0)
+    m_vol = RE_VOL.search(text)
+    if m_vol:
+        vol_disc = int(m_vol.group(1))
+        vol_threshold = int(m_vol.group(2))
+        if quantity >= vol_threshold:
+            price = price * (1 - vol_disc / 100.0)
 
     # ── Pack / per-N conversions ─────────────────────────────────────────────
     if category_key == 'led-lighting' and RE_PACK.search(text):
