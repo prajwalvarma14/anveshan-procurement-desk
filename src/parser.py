@@ -6,18 +6,14 @@ import re
 #  LATEST MESSAGE ISOLATION
 # ═══════════════════════════════════════════════════════════════════════════════
 
-RE_LATEST_MARKER = re.compile(r'\[Latest message\s*[—–-]')
-
 def isolate_latest_message(full_msg):
     """Return only the supplier's latest message, excluding quoted history."""
-    marker = RE_LATEST_MARKER.search(full_msg)
-    if marker:
-        rest = full_msg[marker.start():]
-        newline = rest.find('\n')
-        if newline != -1:
-            return rest[newline + 1:]
-        return rest
-    return full_msg
+    if '[Latest message' not in full_msg:
+        return full_msg
+    idx = full_msg.find('[Latest message')
+    rest = full_msg[idx:]
+    newline = rest.find('\n')
+    return rest[newline + 1:] if newline != -1 else rest
 
 
 # ═══════════════════════════════════════════════════════════════════════════════

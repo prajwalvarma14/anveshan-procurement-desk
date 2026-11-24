@@ -42,42 +42,54 @@ def validate_label(label):
 def main():
     base = os.path.join(os.path.dirname(__file__), '..')
     threads_path = os.path.join(base, 'threads.csv')
-    output_path = os.path.join(base, 'outputs', 'submission.csv')
+    out_dir = os.path.join(base, 'outputs')
+    os.makedirs(out_dir, exist_ok=True)
 
-    print(f'Loading threads from {threads_path}...')
-    threads = load_threads(threads_path)
-    print(f'  Loaded {len(threads)} threads.')
-
-    results = []
+    print(f'Streaming threads from {threads_path}...')
     action_counts = {}
     invalid = 0
+    results = []
 
-    for i, t in enumerate(threads):
-        label = decide(t)
+    with open(threads_path, encoding='utf-8') as f:
+        reader = csv.reader(f)
+        cols = {name: i for i, name in enumerate(next(reader))}
+        tid_i, sup_i, cat_i, date_i = cols['thread_id'], cols['supplier'], cols['category'], cols['date']
+        qty_i, rnd_i, msg_i = cols['quantity'], cols['round'], cols['supplier_message']
 
-        if not validate_label(label):
-            print(f'  ⚠ INVALID label for {t["thread_id"]}: {label}')
-            invalid += 1
+        for i, row in enumerate(reader):
+            t = {
+                'thread_id': row[tid_i], 'supplier': row[sup_i], 'category': row[cat_i],
+                'date': row[date_i], 'quantity': row[qty_i], 'round': row[rnd_i],
+                'supplier_message': row[msg_i]
+            }
+            label = decide(t)
 
-        action_reason = ':'.join(label.split(':')[:2])
-        action_counts[action_reason] = action_counts.get(action_reason, 0) + 1
+            if not validate_label(label):
+                print(f'  ⚠ INVALID label for {row[tid_i]}: {label}')
+                invalid += 1
 
-        results.append({'thread_id': t['thread_id'], 'label': label})
+            action_reason = ':'.join(label.split(':')[:2])
+            action_counts[action_reason] = action_counts.get(action_reason, 0) + 1
+            results.append({'thread_id': row[tid_i], 'label': label})
 
-        if (i + 1) % 500 == 0:
-            print(f'  Processed {i+1}/{len(threads)}...')
+            if (i + 1) % 500 == 0:
+                print(f'  Processed {i+1} threads...')
 
-    # Write outputs
-    final_output_path = os.path.join(base, 'outputs', 'submission_final.csv')
-    write_submission(results, final_output_path)
-    print(f'\n  ✅ Written {len(results)} rows to {final_output_path}')
-    try:
-        write_submission(results, output_path)
-        print(f'  ✅ Written {len(results)} rows to {output_path}')
-    except PermissionError:
-        print(f'  ℹ Note: {output_path} is currently locked by another program (e.g. Excel). submission_final.csv was created successfully.')
+    target_files = [
+        'submission.csv',
+        'submission_final.csv',
+        'submission_7.csv',
+        'submission_8.csv'
+    ]
 
-    # Summary
+    for fname in target_files:
+        fpath = os.path.join(out_dir, fname)
+        try:
+            write_submission(results, fpath)
+            print(f'  ✅ Written {len(results)} rows to {fpath}')
+        except PermissionError:
+            print(f'  ℹ Note: {fpath} is locked by another process.')
+
     print(f'\n  Distribution of ACTION:REASON:')
     for key in sorted(action_counts.keys()):
         print(f'    {key}: {action_counts[key]}')
@@ -85,7 +97,7 @@ def main():
     if invalid:
         print(f'\n  ⚠ {invalid} invalid labels detected!')
     else:
-        print(f'\n  ✅ All labels pass format validation.')
+        print(f'\n  ✅ All {len(results)} labels pass format validation.')
 
 
 if __name__ == '__main__':
