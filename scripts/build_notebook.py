@@ -69,20 +69,27 @@ import time
 import glob
 from decimal import Decimal, ROUND_HALF_UP
 
-# Adaptive Path Resolution (Kaggle vs Local)
-KAGGLE_INPUT = '/kaggle/input/the-procurement-desk'
-LOCAL_DIR = '.'
+# Dynamic Path Auto-Discovery (Kaggle vs Local)
+DATA_DIR = None
+if os.path.exists('/kaggle/input'):
+    for root, dirs, files in os.walk('/kaggle/input'):
+        if 'threads.csv' in files:
+            DATA_DIR = root
+            break
 
-if os.path.exists(KAGGLE_INPUT):
-    DATA_DIR = KAGGLE_INPUT
-    OUTPUT_DIR = '/kaggle/working'
-else:
-    DATA_DIR = LOCAL_DIR
-    OUTPUT_DIR = os.path.join(LOCAL_DIR, 'outputs')
+if not DATA_DIR:
+    for root, dirs, files in os.walk('.'):
+        if 'threads.csv' in files:
+            DATA_DIR = root
+            break
 
+if not DATA_DIR:
+    DATA_DIR = '.'
+
+OUTPUT_DIR = '/kaggle/working' if os.path.exists('/kaggle') else './outputs'
 os.makedirs(OUTPUT_DIR, exist_ok=True)
-print(f"Data directory:   {DATA_DIR}")
-print(f"Output directory: {OUTPUT_DIR}")
+print(f"Auto-discovered Data directory:   {DATA_DIR}")
+print(f"Output directory:                 {OUTPUT_DIR}")
 """
     c2 = nbf.v4.new_code_cell(code_c2)
     c2.outputs = [nbf.v4.new_output(output_type='stream', name='stdout', text="Data directory:   /kaggle/input/the-procurement-desk\nOutput directory: /kaggle/working\n")]
@@ -776,6 +783,12 @@ if os.path.exists(sample_threads_path) and os.path.exists(sample_answers_path):
     cells.append(nbf.v4.new_markdown_cell("""## 8. High-Throughput Streaming Execution (2,000 Threads) & Export"""))
 
     code_c14 = """threads_path = os.path.join(DATA_DIR, 'threads.csv')
+if not os.path.exists(threads_path):
+    for root, _, files in os.walk('/kaggle/input'):
+        if 'threads.csv' in files:
+            threads_path = os.path.join(root, 'threads.csv')
+            break
+
 submission_path = os.path.join(OUTPUT_DIR, 'submission.csv')
 
 print("Processing 2,000 test threads via low-memory streaming pipeline...")
